@@ -3,7 +3,7 @@ vim-googurl
 
 ## Description
 
-A vim plugin to easily create [Markdown](http://daringfireball.net/projects/markdown/) links from a [Google](http://www.google.com/) query. I wrote this script because I used to toggle back and forth between vim and my web browser when inserting links into text.
+A [vim](http://www.vim.org/) plugin to easily create [Markdown](http://daringfireball.net/projects/markdown/) links from a [Google](http://www.google.com/) query. I wrote this script because I used to toggle back and forth between vim and my web browser when inserting links into text.
 
 ## Install
 
@@ -17,6 +17,13 @@ vim-googurl needs ruby support compiled in vim, and the following gems:
 The plugin will define a `FindUrls` command. Put your cursor over a word, call `:FindUrls` and you will be offered a set of choices drawn from Google.
 
 For instance, suppose that you want to link to [Github](https://github.com/), put the word `Github` under your cursor, and invoke `:FindUrls`. You will be prompted to choose the URL among several Google matches. Make a choice, and the link will appear as `[Github](https://github.com/)` in your markdown file.
+
+## Todo
+
+Nice features would be:
+
+- Use the current visual selection in addition to the word under cursor 
+- Make a [Wikipedia](http://www.wikipedia.org/)-specific version
 
 ## License
 

@@ -18,11 +18,12 @@ The plugin will define a `FindUrls` command. Put your cursor over a word, call `
 
 For instance, suppose that you want to link to [Github](https://github.com/), put the word `Github` under your cursor, and invoke `:FindUrls`. You will be prompted to choose the URL among several Google matches. Make a choice, and the link will appear as `[Github](https://github.com/)` in your markdown file.
 
+You may also query urls for the current visual selection by pressing 'u'.
+
 ## Todo
 
 Nice features would be:
 
-- Use the current visual selection in addition to the word under cursor 
 - Make a [Wikipedia](http://www.wikipedia.org/)-specific version
 
 ## License

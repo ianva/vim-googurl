@@ -13,10 +13,29 @@ if !has("ruby")
   finish
 end
 
-command FindUrls :call <SID>FindUrls()
+command FindUrls :call <SID>FindUrlsWuc()
 
-function! s:FindUrls()
-  ruby find_urls()
+vnoremap u :call <SID>FindUrlsSelection()<cr>
+
+function! s:FindUrlsWuc()
+  ruby find_urls_wuc()
+endfunction
+
+function! s:FindUrlsSelection()
+  ruby find_urls_vs()
+endfunction
+
+"this function taken from http://vim.1045645.n5.nabble.com/Is-there-any-way-to-get-visual-selected-text-in-VIM-script-td1171241.html
+function! GetVisual() range
+        let reg_save = getreg('"')
+        let regtype_save = getregtype('"')
+        let cb_save = &clipboard
+        set clipboard&
+        normal! ""gvy
+        let selection = getreg('"')
+        call setreg('"', reg_save, regtype_save)
+        let &clipboard = cb_save
+        return selection
 endfunction
 
 ruby << EOF
@@ -27,8 +46,18 @@ require "json"
 
 GOOG_BASE_URL="http://ajax.googleapis.com/ajax/services/search/web?v=1.0&q="
 
-def find_urls()
-  search_term = word_under_cursor()
+# Find urls for the word under cursor
+def find_urls_wuc()
+  find_urls(:word_under_cursor, :replace_word_under_cursor)
+end
+
+# Find urls for the visual selection
+def find_urls_vs()
+  find_urls(:selection, :replace_selection)
+end
+
+def find_urls(get_operand, replace_operand)
+  search_term = send(get_operand)
   reply = JSON.parse(read_uri(make_google_query_url(search_term)))
 
   if reply["responseStatus"] != 200
@@ -43,11 +72,15 @@ def find_urls()
   end
   corrected_index = index - 1
 
-  replace_word_under_cursor("[#{search_term}](#{urls[corrected_index]})")
+  send(replace_operand, "[#{search_term}](#{urls[corrected_index]})")
 end
 
 def word_under_cursor()
   return VIM::evaluate("expand(\"<cword>\")")
+end
+
+def selection()
+  return VIM::evaluate("GetVisual()")
 end
 
 def make_google_query_url(search_term)
@@ -70,6 +103,10 @@ end
 
 def replace_word_under_cursor(new_str)
   VIM.command("norm ciw#{new_str}")
+end
+
+def replace_selection(new_str)
+  VIM.command("norm gvc#{new_str}")
 end
 
 EOF

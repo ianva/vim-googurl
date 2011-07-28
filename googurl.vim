@@ -25,17 +25,15 @@ function! s:FindUrlsSelection()
   ruby find_urls_vs()
 endfunction
 
-"this function taken from http://vim.1045645.n5.nabble.com/Is-there-any-way-to-get-visual-selected-text-in-VIM-script-td1171241.html
-function! s:GetVisual() range
-        let reg_save = getreg('"')
-        let regtype_save = getregtype('"')
-        let cb_save = &clipboard
-        set clipboard&
-        normal! ""gvy
-        let selection = getreg('"')
-        call setreg('"', reg_save, regtype_save)
-        let &clipboard = cb_save
-        return selection
+" This function taken from the lh-vim repository
+function! s:GetVisualSelection()
+  try
+    let a_save = @a
+    normal! gv"ay
+    return @a
+  finally
+    let @a = a_save
+  endtry
 endfunction
 
 ruby << EOF
@@ -80,7 +78,7 @@ def word_under_cursor()
 end
 
 def selection()
-  return VIM::evaluate("<SID>GetVisual()")
+  return VIM::evaluate("<SID>GetVisualSelection()")
 end
 
 def make_google_query_url(search_term)

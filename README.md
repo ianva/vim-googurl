@@ -25,6 +25,7 @@ You may also query urls for the current visual selection by pressing 'u'.
 Nice features would be:
 
 - Make a [Wikipedia](http://www.wikipedia.org/)-specific version
+- Extend to other markup formats e.g. [AsciiDoc](http://www.methods.co.nz/asciidoc/)
 
 ## License
 
